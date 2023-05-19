@@ -16,15 +16,19 @@ class Displacer
 
     public function displayCard(object $person): void
     {
-        // TODO:ElseExpressionで検知されるためリファクタリングできないか確認
-        if ($person->getName() !== $this->name && count($person->getHand()) === 2) {
+        $cpuHasTwoCard = $person->getName() !== $this->name && count($person->getHand()) === 2;
+        $isPlayer = $person->getName() === $this->name;
+
+        if ($cpuHasTwoCard) {
             $this->hideCpuSecondCard($person);
-        } else {
+        }
+
+        if ($isPlayer || !$cpuHasTwoCard) {
             echo $person->getName() . 'の引いたカードは' . $person->getCard()->getSuit() . 'の' . $person->getCard()->getNumber() . 'です。' . PHP_EOL;
         }
     }
 
-    public function hideCpuSecondCard(object $person): void
+    private function hideCpuSecondCard(object $person): void
     {
         echo $person->getName() . 'の引いた2枚目のカードは分かりません。' . PHP_EOL;
     }
