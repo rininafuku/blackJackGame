@@ -5,6 +5,10 @@ namespace blackJack;
 class Displacer
 {
 
+    public function __construct(private string $name)
+    {
+    }
+
     public function announceGameStart(): void
     {
         echo 'ブラックジャックを開始します。' . PHP_EOL;
@@ -13,7 +17,7 @@ class Displacer
     public function displayCard(object $person): void
     {
         // TODO:ElseExpressionで検知されるためリファクタリングできないか確認
-        if ($person instanceof Cpu && count($person->getHand()) === 2) {
+        if ($person->getName() !== $this->name && count($person->getHand()) === 2) {
             $this->hideCpuSecondCard($person);
         } else {
             echo $person->getName() . 'の引いたカードは' . $person->getCard()->getSuit() . 'の' . $person->getCard()->getNumber() . 'です。' . PHP_EOL;

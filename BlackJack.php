@@ -2,12 +2,10 @@
 
 namespace blackJack;
 
-//TODO:DealerとParticipantを削除してPlayerクラスだけにする
-// tryCatchをする
+//TODO: tryCatchをする
 
 require_once('Deck.php');
 require_once('Player.php');
-require_once('Cpu.php');
 require_once('Displacer.php');
 
 class BlackJack
@@ -31,16 +29,16 @@ class BlackJack
     private array $cpuPlayers;
 
 
-    public function __construct()
+    public function __construct(private string $name)
     {
         $this->deck = new Deck();
         $this->player = new Player('あなた');
-        $this->dealer = new Cpu('ディーラー');
+        $this->dealer = new Player('ディーラー');
 
         $this->participant = [$this->player, $this->dealer];
         $this->cpuPlayers = [$this->dealer];
 
-        $this->displacer = new Displacer();
+        $this->displacer = new Displacer($this->name);
     }
 
 
@@ -142,5 +140,5 @@ class BlackJack
 }
 
 
-$blackJack = new BlackJack();
+$blackJack = new BlackJack('田中');
 $blackJack->start();
