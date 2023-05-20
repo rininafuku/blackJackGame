@@ -50,21 +50,22 @@ class HandEvaluator
 
     /**
      * @param object[] $participant
+     * @return object[]
      */
     public function getWinner(array $participant): array
     {
-        $notGameOverParticipant = array_filter($participant, fn ($player) => $player->getScore() < self::GAME_OVER_SCORE);
+        $notGameOverPlayers = array_filter($participant, fn ($person) => $person->getScore() < self::GAME_OVER_SCORE);
 
-        if (empty($notGameOverParticipant)) {
+        if (empty($notGameOverPlayers)) {
             return [];
         }
 
-        $maxScore = max(array_map(fn ($player) => $player->getScore(), $notGameOverParticipant));
+        $maxScore = max(array_map(fn ($person) => $person->getScore(), $notGameOverPlayers));
 
         $winner = [];
-        foreach ($notGameOverParticipant as $player) {
-            if ($player->getScore() >= $maxScore) {
-                $winner[] = $player;
+        foreach ($notGameOverPlayers as $person) {
+            if ($person->getScore() >= $maxScore) {
+                $winner[] = $person;
             }
         }
 

@@ -19,7 +19,6 @@ class BlackJack
     private object $dealer;
 
     private const GAME_OVER_SCORE = 22;
-    private const BLACK_JACK_SCORE = 21;
 
     /**
      * @var object[] $participant
