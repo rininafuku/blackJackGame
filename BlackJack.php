@@ -2,6 +2,7 @@
 
 namespace blackJack;
 
+use Exception;
 //TODO: tryCatchをする
 
 require_once('Deck.php');
@@ -73,21 +74,28 @@ class BlackJack
     private function performPlayerAction(object $player): void
     {
         while (true) {
-            $this->displacer->letPlayerSelect();
-            $input = trim(fgets(STDIN));
+            try {
+                $this->displacer->letPlayerSelect();
+                $input = trim(fgets(STDIN));
 
-            if ($input === 'Y') {
-                $player->drawCard($this->deck);
-                $this->displacer->displayCard($player);
-                $this->displacer->displayScore($player);
-            } elseif ($input === 'N') {
-                break;
-            }
+                if ($input === 'Y') {
+                    $player->drawCard($this->deck);
+                    $this->displacer->displayCard($player);
+                    $this->displacer->displayScore($player);
+                } elseif ($input === 'N') {
+                    break;
+                } else {
+                    throw new Exception("YまたはNを入力してください");
+                }
 
-            if ($player->getScore() >= self::GAME_OVER_SCORE) {
-                break;
+                if ($player->getScore() >= self::GAME_OVER_SCORE) {
+                    break;
+                }
+            } catch (Exception $e) {
+                echo "エラー: " . $e->getMessage() . PHP_EOL;
             }
         } //endWhile
+
     }
 
     /**
