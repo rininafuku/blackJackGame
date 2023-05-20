@@ -132,7 +132,3 @@ class BlackJack
         $this->displacer->announceWinner($winner[0]);
     }
 }
-
-
-$blackJack = new BlackJack('田中');
-$blackJack->start();
