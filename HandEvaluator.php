@@ -2,7 +2,7 @@
 
 namespace blackJack;
 
-class ScoreKeePer
+class HandEvaluator
 {
     private const CARD_POINT = [
         '2' => 2,

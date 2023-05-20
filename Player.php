@@ -2,7 +2,7 @@
 
 namespace blackJack;
 
-require_once('ScoreKeeper.php');
+require_once('HandEvaluator.php');
 
 class Player
 {
@@ -17,7 +17,7 @@ class Player
     // NOTE : $cardプロパティを用いてDisplacerクラスのdisplayCardメソッドを実現している
     private array $card = [];
 
-    public function __construct(private string $name, private object $scoreKeeper)
+    public function __construct(private string $name, private object $handEvaluator)
     {
     }
 
@@ -57,6 +57,6 @@ class Player
 
     public function getScore(): int
     {
-        return $this->scoreKeeper->getScore($this->hand);
+        return $this->handEvaluator->getScore($this->hand);
     }
 }
