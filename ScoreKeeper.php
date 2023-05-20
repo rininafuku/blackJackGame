@@ -24,26 +24,18 @@ class ScoreKeePer
     private const GAME_OVER_SCORE = 22;
 
     /**
-     * @var array<int,int> $scores
+     * @param Card[] $hand
      */
-    private array $scores = [];
-
-    /**
-     * @param array<int,Card> $card
-     */
-    public function addScore(array $card): void
+    public function getScore(array $hand): int
     {
-        $this->scores[] = self::CARD_POINT[$card[0]->getNumber()];
-    }
+        $scores = [];
+        $scores = array_map(fn ($card) => self::CARD_POINT[$card->getNumber()], $hand);
 
-
-    public function getScore(): int
-    {
-        while (array_sum($this->scores) >= self::GAME_OVER_SCORE && in_array(self::ACE, $this->scores)) {
-            $this->scores = $this->convertAceToMinPoint($this->scores);
+        while (array_sum($scores) >= self::GAME_OVER_SCORE && in_array(self::ACE, $scores)) {
+            $scores = $this->convertAceToMinPoint($scores);
         }
 
-        return array_sum($this->scores);
+        return array_sum($scores);
     }
 
     /**

@@ -16,11 +16,9 @@ class Player
      */
     // NOTE : $cardプロパティを用いてDisplacerクラスのdisplayCardメソッドを実現している
     private array $card = [];
-    private object $scoreKeeper;
 
-    public function __construct(private string $name)
+    public function __construct(private string $name, private object $scoreKeeper)
     {
-        $this->scoreKeeper = new ScoreKeePer();
     }
 
     public function getName(): string
@@ -33,7 +31,6 @@ class Player
     {
         $card = $deck->drawCard();
         $this->addCardToHand($card);
-        $this->addScore($card);
     }
 
     /**
@@ -43,14 +40,6 @@ class Player
     {
         $this->card = $card;
         $this->hand = array_merge($this->hand, $this->card);
-    }
-
-    /**
-     * @param array<int,Card> $card
-     */
-    public function addScore($card): void
-    {
-        $this->scoreKeeper->addScore($card);
     }
 
     public function getCard(): Card
@@ -68,6 +57,6 @@ class Player
 
     public function getScore(): int
     {
-        return $this->scoreKeeper->getScore();
+        return $this->scoreKeeper->getScore($this->hand);
     }
 }

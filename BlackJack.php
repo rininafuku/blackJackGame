@@ -5,12 +5,14 @@ namespace blackJack;
 //TODO: tryCatchをする
 
 require_once('Deck.php');
+require_once('ScoreKeeper.php');
 require_once('Player.php');
 require_once('Displacer.php');
 
 class BlackJack
 {
     private object $deck;
+    private object $scoreKeeper;
     private object $displacer;
 
     private object $player;
@@ -32,8 +34,9 @@ class BlackJack
     public function __construct(private string $name)
     {
         $this->deck = new Deck();
-        $this->player = new Player('あなた');
-        $this->dealer = new Player('ディーラー');
+        $this->scoreKeeper = new ScoreKeePer();
+        $this->player = new Player('あなた', $this->scoreKeeper);
+        $this->dealer = new Player('ディーラー', $this->scoreKeeper);
 
         $this->participant = [$this->player, $this->dealer];
         $this->cpuPlayers = [$this->dealer];
