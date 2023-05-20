@@ -47,4 +47,27 @@ class HandEvaluator
         $scores[array_search(self::ACE, $scores)] = self::MIN_POINT;
         return $scores;
     }
+
+    /**
+     * @param object[] $participant
+     */
+    public function getWinner(array $participant): array
+    {
+        $notGameOverParticipant = array_filter($participant, fn ($player) => $player->getScore() < self::GAME_OVER_SCORE);
+
+        if (empty($notGameOverParticipant)) {
+            return [];
+        }
+
+        $maxScore = max(array_map(fn ($player) => $player->getScore(), $notGameOverParticipant));
+
+        $winner = [];
+        foreach ($notGameOverParticipant as $player) {
+            if ($player->getScore() >= $maxScore) {
+                $winner[] = $player;
+            }
+        }
+
+        return $winner;
+    }
 }

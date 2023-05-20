@@ -19,6 +19,7 @@ class BlackJack
     private object $dealer;
 
     private const GAME_OVER_SCORE = 22;
+    private const BLACK_JACK_SCORE = 21;
 
     /**
      * @var object[] $participant
@@ -35,7 +36,7 @@ class BlackJack
     {
         $this->deck = new Deck();
         $this->handEvaluator = new HandEvaluator();
-        $this->player = new Player('あなた', $this->handEvaluator);
+        $this->player = new Player($this->name, $this->handEvaluator);
         $this->dealer = new Player('ディーラー', $this->handEvaluator);
 
         $this->participant = [$this->player, $this->dealer];
@@ -51,7 +52,7 @@ class BlackJack
         $this->drawTwoCards($this->participant);
         $this->performPlayerAction($this->player);
         $this->performCpuAction($this->cpuPlayers);
-        $this->getWinner($this->participant);
+        $this->announceWinner($this->participant);
         $this->displacer->announceGameClose();
     }
 
@@ -98,6 +99,7 @@ class BlackJack
         foreach ($cpuPlayers as $person) {
 
             $this->displacer->displayCpuSecondCard($person);
+            $this->displacer->displayScore($person);
 
             while ($person->getScore() <= 17) {
                 $person->drawCard($this->deck);
@@ -110,35 +112,18 @@ class BlackJack
     /**
      * @param object[] $participant
      */
-    private function getWinner(array $participant): void
+    private function announceWinner(array $participant): void
     {
         $this->displacer->displayAllParticipantScore($participant);
 
-        // 全員のスコアを$scores配列で持つ
-        $maxScore = 0;
-        $scores = array_map(fn ($person) => $person->getScore(), $participant);
-        $maxScore = max($scores);
+        $winner = $this->handEvaluator->getWinner($participant);
 
-        // 全員が22以上だった場合のドロー
-        $isOverScore = array_filter($scores, fn ($score) => $score >= self::GAME_OVER_SCORE);
-        if (!empty($isOverScore)) {
+        if (count($winner) !== 1) {
             $this->displacer->announceTieGame();
             return;
         }
 
-        // 複数の勝者がいる場合のドロー
-        $isMultipleWinners = array_count_values($scores)[$maxScore] > 1;
-        if ($isMultipleWinners) {
-            $this->displacer->announceTieGame();
-            return;
-        }
-
-        //勝者をアナウンス
-        foreach ($participant as $person) {
-            if ($person->getScore() === $maxScore) {
-                $this->displacer->announceWinner($person);
-            }
-        }
+        $this->displacer->announceWinner($winner[0]);
     }
 }
 
