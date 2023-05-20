@@ -52,7 +52,7 @@ class BlackJack
         $this->drawTwoCards($this->participant);
         $this->performPlayerAction($this->player);
         $this->performCpuAction($this->cpuPlayers);
-        $this->announceWinner($this->participant);
+        $this->announceResult($this->participant);
         $this->displacer->announceGameClose();
     }
 
@@ -112,7 +112,7 @@ class BlackJack
     /**
      * @param object[] $participant
      */
-    private function announceWinner(array $participant): void
+    private function announceResult(array $participant): void
     {
         $this->displacer->displayAllParticipantScore($participant);
 
