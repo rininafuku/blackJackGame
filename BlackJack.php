@@ -3,7 +3,6 @@
 namespace blackJack;
 
 use Exception;
-//TODO: tryCatchをする
 
 require_once('Deck.php');
 require_once('HandEvaluator.php');
